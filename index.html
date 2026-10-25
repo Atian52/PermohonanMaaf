@@ -352,6 +352,12 @@
             position: relative;
             width: 100%;
             max-width: 850px;
+            height: 360px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            margin: 10px 0 30px 0;
             touch-action: pan-y;
             cursor: grab;
         }
@@ -359,15 +365,6 @@
         .coverflow-wrapper.dragging {
             cursor: grabbing;
             user-select: none;
-        }
-
-        .coverflow-wrapper > .cover-card {
-            height: 360px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1200px;
-            margin: 10px 0 30px 0;
         }
 
         .cover-card {

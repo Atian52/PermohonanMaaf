@@ -484,6 +484,36 @@
             gap: 18px;
         }
 
+        .player-volume-control {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .player-volume-slider {
+            position: absolute;
+            right: 50%;
+            bottom: calc(100% + 14px);
+            z-index: 30;
+            display: none;
+            width: 32px;
+            height: 120px;
+            padding: 9px 7px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 18px;
+            background: rgba(15, 20, 25, 0.92);
+            accent-color: #fff;
+            cursor: pointer;
+            transform: translateX(50%);
+            appearance: auto;
+            writing-mode: bt-lr;
+            -webkit-appearance: slider-vertical;
+        }
+
+        .player-volume-control.open .player-volume-slider {
+            display: block;
+        }
+
         .icon-btn {
             background: none;
             border: none;
@@ -901,9 +931,12 @@
                     <button class="icon-btn" id="auto-next-btn" onclick="toggleAutoNext()">
                         <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
                     </button>
-                    <button class="icon-btn" onclick="toggleMute()">
-                        <svg id="vol-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                    </button>
+                    <div class="player-volume-control" id="player-volume-control">
+                        <button class="icon-btn" type="button" onclick="togglePlayerVolumeSlider(event)" aria-label="Atur volume voice" title="Atur volume voice">
+                            <svg id="vol-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                        </button>
+                        <input class="player-volume-slider" id="player-volume-slider" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume voice" title="Volume voice" oninput="setVoiceVolume(this.value, event)">
+                    </div>
                 </div>
             </div>
 
@@ -1126,8 +1159,10 @@
         let typingTimer = null;
         let currentCharIndex = 0;
         let hasAudioLoaded = false;
+        let voiceVolume = 1;
         const audioPlayer = document.getElementById('audio-player');
         audioPlayer.loop = false;
+        audioPlayer.volume = voiceVolume;
 
         let isDragging = false;
         let startX = 0;
@@ -1380,6 +1415,17 @@
             drawer.style.display = isOpen ? 'block' : 'none';
             button.setAttribute('aria-expanded', String(isOpen));
             button.setAttribute('aria-label', isOpen ? 'Tutup transkrip voice' : 'Buka transkrip voice');
+        }
+
+        function togglePlayerVolumeSlider(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('player-volume-control').classList.toggle('open');
+        }
+
+        function setVoiceVolume(value, event) {
+            if (event) event.stopPropagation();
+            voiceVolume = Number(value);
+            audioPlayer.volume = voiceVolume;
         }
 
         function toggleMute() {

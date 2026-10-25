@@ -352,6 +352,16 @@
             position: relative;
             width: 100%;
             max-width: 850px;
+            touch-action: pan-y;
+            cursor: grab;
+        }
+
+        .coverflow-wrapper.dragging {
+            cursor: grabbing;
+            user-select: none;
+        }
+
+        .coverflow-wrapper > .cover-card {
             height: 360px;
             display: flex;
             justify-content: center;
@@ -1122,6 +1132,60 @@
         const audioPlayer = document.getElementById('audio-player');
         audioPlayer.loop = false;
 
+        let isDragging = false;
+        let startX = 0;
+        let diffX = 0;
+
+        function setupSwipeGestures() {
+            const container = document.getElementById('coverflow');
+            
+            // Touch Events (HP)
+            container.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                diffX = 0;
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                diffX = e.touches[0].clientX - startX;
+            }, { passive: true });
+
+            container.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                if (diffX > 45) {
+                    changeTrack(-1, isPlaying);
+                } else if (diffX < -45) {
+                    changeTrack(1, isPlaying);
+                }
+            });
+
+            // Mouse Events (Laptop / PC)
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                diffX = 0;
+                container.classList.add('dragging');
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                diffX = e.clientX - startX;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                container.classList.remove('dragging');
+                if (diffX > 50) {
+                    changeTrack(-1, isPlaying);
+                } else if (diffX < -50) {
+                    changeTrack(1, isPlaying);
+                }
+            });
+        }
+
         function initCoverflow() {
             const btn = document.getElementById('auto-next-btn');
             if (isAutoNext) btn.classList.add('active');
@@ -1132,7 +1196,12 @@
             tracks.forEach((track, idx) => {
                 const card = document.createElement('div');
                 card.className = 'cover-card';
-                card.onclick = () => selectTrack(idx);
+                card.onclick = () => {
+                    // Cegah klik kartu jika sedang drag / geser
+                    if (Math.abs(diffX) < 10) {
+                        selectTrack(idx);
+                    }
+                };
                 card.innerHTML = `
                     <img src="${track.cover}" alt="${track.title}">
                     <div class="cover-card-info">
@@ -1142,6 +1211,7 @@
                 `;
                 container.appendChild(card);
             });
+            setupSwipeGestures();
             updateCoverflowUI(false);
         }
 

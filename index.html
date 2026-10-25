@@ -101,9 +101,9 @@
         /* --- WIDGET KECIL DI POJOK KANAN BAWAH HALAMAN PERTAMA --- */
         .top-glass-widget {
             position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 100%;
+            bottom: max(24px, env(safe-area-inset-bottom));
+            right: max(24px, env(safe-area-inset-right));
+            width: min(280px, calc(100vw - 32px));
             max-width: 280px;
             padding: 14px 16px;
             border-radius: 20px;
@@ -662,15 +662,18 @@
             .pill-text { display: none; }
 
             .top-glass-widget {
-                max-width: 190px;
-                bottom: 8px;
-                right: 8px;
+                position: fixed;
+                width: min(190px, calc(100vw - 24px));
+                max-width: none;
+                bottom: max(12px, env(safe-area-inset-bottom));
+                right: max(12px, env(safe-area-inset-right));
                 padding: 6px 8px;
             }
             .top-widget-cover { width: 36px; height: 36px; }
-            .top-widget-title, .top-widget-artist { width: 90px; font-size: 0.75rem; }
+            .top-widget-title, .top-widget-artist { width: min(90px, calc(100vw - 100px)); font-size: 0.75rem; }
             .top-widget-times { font-size: 0.6rem; }
             .top-ctrl-btn svg { width: 14px; height: 14px; }
+            .top-widget-controls { gap: 4px; }
             .top-widget-volume-area { display: none; }
         }
 

@@ -1,1491 +1,560 @@
-m<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Aulia — Klarifikasi & Permintaan Maaf</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>404 - Chance to Return Not Found</title>
+    <!-- Font Pixel Retro -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-soft: #f8f9fa;
-            --text-main: #2b2d42;
-            --accent: #457b9d;
-            --dark-bg: #1d3557;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
             -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-soft);
-            color: var(--text-main);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        body::-webkit-scrollbar,
-        html::-webkit-scrollbar {
-            display: none;
-        }
-
-        html {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* --- LAYAR PEMBUKA (SURAT) --- */
-        #opening-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: radial-gradient(circle at center, #2b2d42 0%, #0f1016 100%);
-            color: white;
+            background-color: #f7f7f7;
+            color: #535353;
+            font-family: 'Press Start 2P', monospace;
+            min-height: 100vh;
+            min-height: 100dvh; /* Pas di browser HP modern */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow: hidden;
+            padding: 16px;
+            transition: background-color 0.2s;
         }
 
-        .envelope-box {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px 30px;
-            border-radius: 28px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-            max-width: 390px;
-            width: 90%;
-            animation: float 3s ease-in-out infinite;
+        /* Flex Container Utama agar pas di Laptop & HP */
+        .container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(20px, 4vh, 36px);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .envelope-icon {
-            font-size: 55px;
-            margin-bottom: 15px;
-        }
-
-        .btn-open {
-            margin-top: 24px;
-            padding: 13px 32px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #111;
-            border: none;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 700;
+        /* Area Game / Animasi Dino Versi Patah Hati */
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: clamp(140px, 24vh, 180px);
+            border-bottom: 2px solid #535353;
+            overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
-            transition: transform 0.2s, background 0.2s;
+            touch-action: manipulation;
         }
 
-        .btn-open:hover {
-            transform: scale(1.05);
-            background: #fff;
-        }
-
-        /* --- WIDGET KECIL DI POJOK KANAN BAWAH HALAMAN PERTAMA --- */
-        .top-glass-widget {
+        /* Header Game (Hint & Scoreboard dengan Flexbox) */
+        .game-header {
             position: absolute;
-            bottom: max(24px, env(safe-area-inset-bottom));
-            right: max(24px, env(safe-area-inset-right));
-            width: min(280px, calc(100vw - 32px));
-            max-width: 280px;
-            padding: 14px 16px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            color: #ffffff;
-            text-align: left;
-            z-index: 1000;
-        }
-
-        .top-widget-header {
+            top: 12px;
+            left: 0;
+            width: 100%;
+            padding: 0 10px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .top-widget-cover {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .top-widget-meta {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .top-widget-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 180px;
-        }
-
-        .top-widget-artist {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.78);
-            margin-top: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 180px;
-        }
-
-        .top-widget-progress-area {
-            margin-bottom: 12px;
-        }
-
-        .top-widget-volume-area {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
+            z-index: 10;
+            flex-wrap: wrap;
             gap: 8px;
         }
 
-        .top-widget-volume-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 3px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-            cursor: pointer;
+        .hint {
+            font-size: clamp(7px, 1.8vw, 10px);
+            color: #9e9e9e;
         }
 
-        .top-widget-volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-        }
-
-        .top-widget-times {
+        .scoreboard {
+            font-size: clamp(9px, 2.2vw, 12px);
+            letter-spacing: 1px;
+            color: #535353;
             display: flex;
-            justify-content: space-between;
-            font-size: 0.68rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 5px;
-            font-weight: 500;
+            gap: 10px;
+            margin-left: auto;
         }
 
-        .top-widget-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 3px;
-            border-radius: 3px;
-            background: linear-gradient(to right, #ffffff 12%, rgba(255, 255, 255, 0.3) 12%);
-            outline: none;
-            cursor: pointer;
+        .hi-score {
+            color: #8b8b8b;
         }
 
-        .top-widget-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-        }
-
-        .top-widget-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2px;
-        }
-
-        .top-ctrl-btn {
-            background: none;
-            border: none;
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .top-ctrl-btn:hover {
-            transform: scale(1.12);
-        }
-
-        .top-ctrl-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
-        .top-ctrl-btn.play-main svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .top-ctrl-btn.shuffle-active {
-            color: #ffea00;
-        }
-
-        /* --- KONTEN UTAMA --- */
-        #main-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-        }
-
-        section {
-            min-height: 100vh;
-            padding: 60px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        h1, h2 {
-            font-family: 'Caveat', cursive;
-            font-size: 2.7rem;
-            margin-bottom: 10px;
-        }
-
-        p.subtitle {
-            max-width: 520px;
-            line-height: 1.7;
-            margin-bottom: 35px;
-            font-size: 0.95rem;
-            color: #555;
-        }
-
-        /* --- BAGIAN 1: JURNAL POLAROID --- */
-        .memory-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 28px;
-            max-width: 900px;
-        }
-
-        .polaroid {
-            background: white;
-            padding: 15px 15px 30px 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
-            border-radius: 10px;
-            width: 255px;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s ease;
-        }
-
-        .polaroid.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .polaroid:nth-child(odd).show { transform: rotate(-2deg); }
-        .polaroid:nth-child(even).show { transform: rotate(2deg); }
-
-        .polaroid img {
-            width: 100%;
-            height: 215px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-
-        .polaroid-caption {
-            font-family: 'Caveat', cursive;
-            font-size: 1.4rem;
-            margin-top: 14px;
-            color: #333;
-        }
-
-        /* --- BAGIAN 2: VISION OS 3D MUSIC PLAYER --- */
-        #music-section {
-            position: relative;
-            background: radial-gradient(circle at 50% 40%, #9b5de5 0%, #3a2218 55%, #120d0a 100%);
-            color: #ffffff;
-            overflow: hidden;
-            transition: background 0.9s ease;
-            padding: 70px 15px;
-        }
-
-        #music-section h2 {
-            color: #fff;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-
-        .coverflow-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 850px;
-            height: 360px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1200px;
-            margin: 10px 0 30px 0;
-            touch-action: pan-y;
-            cursor: grab;
-        }
-
-        .coverflow-wrapper.dragging {
-            cursor: grabbing;
-            user-select: none;
-        }
-
-        .cover-card {
+        /* Awan bergerak */
+        .cloud {
             position: absolute;
-            width: 230px;
-            height: 300px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            user-select: none;
+            top: 40px;
+            right: -60px;
+            width: 46px;
+            height: 14px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            animation: moveCloud 8s linear infinite;
+        }
+        .cloud::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            width: 22px;
+            height: 16px;
+            background: #e0e0e0;
+            border-radius: 50%;
         }
 
-        .cover-card img {
+        /* Karakter Utama: Hati yang Patah */
+        .heart-player {
+            position: absolute;
+            bottom: 0;
+            left: clamp(20px, 6vw, 45px);
+            width: clamp(36px, 8vw, 44px);
+            height: clamp(36px, 8vw, 44px);
+            z-index: 5;
+        }
+
+        .heart-player svg {
             width: 100%;
-            height: 73%;
-            object-fit: cover;
-            pointer-events: none;
+            height: 100%;
+            overflow: visible;
         }
 
-        .cover-card-info {
-            height: 27%;
+        /* Transisi belahan hati saat mati */
+        .heart-left, .heart-right, .leg-left, .leg-right {
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dead-eyes {
+            opacity: 0;
+        }
+
+        /* Animasi Melompat */
+        .jump {
+            animation: jumpAnim 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes jumpAnim {
+            0% { bottom: 0; }
+            50% { bottom: 85px; }
+            100% { bottom: 0; }
+        }
+
+        /* Animasi Kaki Berlari */
+        .running .leg-left {
+            animation: runLeg 0.15s infinite alternate;
+        }
+        .running .leg-right {
+            animation: runLeg 0.15s infinite alternate-reverse;
+        }
+
+        @keyframes runLeg {
+            from { transform: translateY(0); }
+            to { transform: translateY(-2px); }
+        }
+
+        /* ====== ANIMASI MATI KETIKA NABRAK ====== */
+        .heart-player.dead {
+            animation: deathShake 0.4s ease forwards;
+        }
+
+        /* Belahan hati terpisah dan jatuh miring */
+        .heart-player.dead .heart-left {
+            transform: translate(-3px, 2px) rotate(-18deg);
+            transform-origin: bottom right;
+            fill: #b51724;
+        }
+
+        .heart-player.dead .heart-right {
+            transform: translate(3px, 2px) rotate(18deg);
+            transform-origin: bottom left;
+            fill: #b51724;
+        }
+
+        /* Muncul mata X X */
+        .heart-player.dead .dead-eyes {
+            opacity: 1;
+        }
+
+        /* Kaki berhenti dan terlipat */
+        .heart-player.dead .leg-left,
+        .heart-player.dead .leg-right {
+            animation: none;
+            transform: translateY(2px);
+        }
+
+        @keyframes deathShake {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-5px, -6px); }
+            40% { transform: translate(5px, -3px); }
+            60% { transform: translate(-3px, 0); }
+            80% { transform: translate(3px, 0); }
+            100% { transform: translate(0, 2px); }
+        }
+
+        /* Rintangan (Batu Nisan Kenangan - Tetap terlihat di layar) */
+        .obstacle {
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            width: clamp(22px, 5vw, 26px);
+            height: clamp(30px, 7vw, 36px);
+            animation: moveObstacle 2s linear infinite;
+        }
+
+        @keyframes moveObstacle {
+            0% { right: 20px; }
+            100% { right: 100%; }
+        }
+
+        @keyframes moveCloud {
+            0% { right: -60px; }
+            100% { right: 105%; }
+        }
+
+        /* Pause semua animasi ketika belum mulai atau tertabrak (Game Over) */
+        .game-area.paused .obstacle,
+        .game-area.paused .cloud,
+        .game-area.paused .heart-player.jump {
+            animation-play-state: paused !important;
+        }
+
+        /* Layar Game Over di tengah area game */
+        .game-over-overlay {
+            position: absolute;
+            inset: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 8px 12px;
-            background: linear-gradient(180deg, rgba(40,40,40,0.7) 0%, rgba(20,20,20,0.9) 100%);
-            text-align: center;
-        }
-
-        .cover-card-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-        }
-
-        .cover-card-artist {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.65);
-            margin-top: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-        }
-
-        .cover-card.active {
-            transform: translate3d(0, 0, 90px) rotateY(0deg);
-            z-index: 10;
-            border-color: rgba(255, 255, 255, 0.55);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75);
-        }
-
-        .cover-card.prev-1 {
-            transform: translate3d(-145px, 0, 0px) rotateY(28deg) scale(0.88);
-            z-index: 8;
-            filter: brightness(0.75);
-        }
-
-        .cover-card.prev-2 {
-            transform: translate3d(-255px, 0, -90px) rotateY(38deg) scale(0.76);
-            z-index: 6;
-            filter: brightness(0.5);
-        }
-
-        .cover-card.next-1 {
-            transform: translate3d(145px, 0, 0px) rotateY(-28deg) scale(0.88);
-            z-index: 8;
-            filter: brightness(0.75);
-        }
-
-        .cover-card.next-2 {
-            transform: translate3d(255px, 0, -90px) rotateY(-38deg) scale(0.76);
-            z-index: 6;
-            filter: brightness(0.5);
-        }
-
-        .cover-card.hidden {
-            transform: translate3d(0, 0, -200px) scale(0.5);
+            gap: 8px;
+            background: rgba(247, 247, 247, 0.65);
             opacity: 0;
             pointer-events: none;
-        }
-
-        .glass-player-bar {
-            width: 95%;
-            max-width: 720px;
-            height: 76px;
-            border-radius: 40px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            gap: 15px;
+            transition: opacity 0.2s ease;
             z-index: 20;
         }
 
-        .player-controls-left, .player-controls-right {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .player-volume-control {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .player-volume-slider {
-            position: absolute;
-            right: 50%;
-            bottom: calc(100% + 14px);
-            z-index: 30;
-            display: none;
-            width: 32px;
-            height: 120px;
-            padding: 9px 7px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 18px;
-            background: rgba(15, 20, 25, 0.92);
-            accent-color: #fff;
-            cursor: pointer;
-            transform: translateX(50%);
-            appearance: auto;
-            writing-mode: bt-lr;
-            -webkit-appearance: slider-vertical;
-        }
-
-        .player-volume-control.open .player-volume-slider {
-            display: block;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.9);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s, color 0.2s, opacity 0.2s, background 0.2s;
-            position: relative;
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.15);
-            color: #fff;
-        }
-
-        .icon-btn svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
-        #auto-next-btn {
-            opacity: 0.45;
-            padding: 6px;
-            border-radius: 50%;
-        }
-
-        #auto-next-btn.active {
+        .game-over-overlay.show {
             opacity: 1;
-            color: #ffd166;
-            background: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 0 12px rgba(255, 209, 102, 0.35);
+            pointer-events: auto;
         }
 
-        .now-playing-pill {
-            flex: 1;
-            max-width: 320px;
-            height: 52px;
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            padding: 6px 12px;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .game-over-text {
+            font-size: clamp(12px, 3.5vw, 16px);
+            color: #535353;
+            letter-spacing: 3px;
         }
 
-        .now-playing-pill img {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .pill-text {
-            text-align: left;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .pill-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .pill-artist {
-            font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.65);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .sound-wave {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            height: 14px;
-        }
-
-        .sound-wave span {
-            width: 2.5px;
-            height: 4px;
-            background: #fff;
-            border-radius: 2px;
-            transition: height 0.2s;
-        }
-
-        .sound-wave.playing span {
-            animation: wave 0.8s infinite ease-in-out;
-        }
-
-        .sound-wave.playing span:nth-child(2) { animation-delay: 0.2s; }
-        .sound-wave.playing span:nth-child(3) { animation-delay: 0.4s; }
-        .sound-wave.playing span:nth-child(4) { animation-delay: 0.1s; }
-
-        @keyframes wave {
-            0%, 100% { height: 4px; }
-            50% { height: 14px; }
-        }
-
-        .pill-progress-bg {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .pill-progress-fill {
-            width: 0%;
-            height: 100%;
-            background: #ffffff;
-            transition: width 0.2s linear;
-        }
-
-        .lyrics-drawer {
-            display: none;
-            margin-top: 25px;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 24px;
-            border-radius: 20px;
-            max-width: 620px;
-            width: 92%;
-            min-height: 170px;
-            text-align: left;
-            font-size: 0.94rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            transition: all 0.4s ease;
-        }
-
-        .lyrics-badge {
-            display: inline-block;
-            font-size: 0.72rem;
-            text-transform: uppercase;
+        .game-over-score {
+            font-size: clamp(9px, 2.5vw, 11px);
+            color: #7a7a7a;
             letter-spacing: 1px;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 10px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            color: #ffd166;
-            font-weight: 700;
         }
 
-        @media (max-width: 600px) {
-            .envelope-box { padding: 25px 20px; max-width: 320px; }
-            .envelope-icon { font-size: 40px; }
-            h2 { font-size: 1.7rem; }
-            p.subtitle { font-size: 0.85rem; margin-bottom: 20px; }
-            
-            .cover-card { width: 150px; height: 210px; }
-            .cover-card.prev-1 { transform: translate3d(-70px, 0, 0) rotateY(20deg) scale(0.85); }
-            .cover-card.prev-2 { transform: translate3d(-120px, 0, -60px) rotateY(30deg) scale(0.7); }
-            .cover-card.next-1 { transform: translate3d(70px, 0, 0) rotateY(-20deg) scale(0.85); }
-            .cover-card.next-2 { transform: translate3d(120px, 0, -60px) rotateY(-30deg) scale(0.7); }
-            .coverflow-wrapper { height: 250px; margin: 5px 0 20px 0; }
-            
-            .glass-player-bar { 
-                width: 96%;
-                padding: 0 8px; 
-                height: 60px; 
-                gap: 4px; 
-                border-radius: 18px;
-            }
-            .player-controls-left, .player-controls-right { gap: 4px; }
-            .icon-btn svg { width: 18px; height: 18px; }
-            .now-playing-pill { gap: 6px; padding: 4px 6px; height: 44px; }
-            .now-playing-pill img { width: 30px; height: 30px; }
-            .pill-text { display: none; }
-
-            .top-glass-widget {
-                position: fixed;
-                width: min(190px, calc(100vw - 24px));
-                max-width: none;
-                bottom: max(12px, env(safe-area-inset-bottom));
-                right: max(12px, env(safe-area-inset-right));
-                padding: 6px 8px;
-            }
-            .top-widget-cover { width: 36px; height: 36px; }
-            .top-widget-title, .top-widget-artist { width: min(90px, calc(100vw - 100px)); font-size: 0.75rem; }
-            .top-widget-times { font-size: 0.6rem; }
-            .top-ctrl-btn svg { width: 14px; height: 14px; }
-            .top-widget-controls { gap: 4px; }
-            .top-widget-volume-area { display: none; }
-        }
-
-        @media (min-width: 400px) and (max-width: 600px) {
-            .pill-text { display: block; }
-        }
-
-        /* --- BAGIAN 3: TOMBOL INTERAKTIF --- */
-        #forgive-section {
-            position: relative;
-            background: var(--bg-soft);
-        }
-
-        .cute-gif {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .button-group {
+        .restart-icon {
+            width: 34px;
+            height: 30px;
+            background: #535353;
+            color: #f7f7f7;
+            border-radius: 4px;
             display: flex;
-            gap: 18px;
-            margin-top: 20px;
-            position: relative;
-            height: 80px;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px #bdbdbd;
+        }
+
+        .restart-icon:hover {
+            background: #e63946;
+        }
+
+        /* Bagian Teks 404 di Tengah (Flexbox) */
+        .error-content {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            gap: clamp(10px, 2vh, 16px);
+            padding: 0 10px;
             width: 100%;
         }
 
-        .btn-yes {
-            padding: 13px 28px;
-            background-color: #2a9d8f;
-            color: white;
+        .error-code {
+            font-size: clamp(38px, 10vw, 60px);
+            color: #535353;
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 0px #e0e0e0;
+        }
+
+        .error-title {
+            font-size: clamp(11px, 3vw, 16px);
+            line-height: 1.6;
+            color: #535353;
+            text-transform: uppercase;
+            max-width: 95%;
+        }
+
+        .error-desc {
+            font-family: 'VT323', monospace;
+            font-size: clamp(18px, 4.5vw, 24px);
+            color: #7a7a7a;
+            max-width: 500px;
+            line-height: 1.3;
+        }
+
+        /* Tombol Move On */
+        .btn-moveon {
+            margin-top: 6px;
+            background-color: #535353;
+            color: #f7f7f7;
             border: none;
-            border-radius: 25px;
-            font-size: 15px;
-            font-weight: 600;
+            padding: clamp(10px, 2.5vw, 14px) clamp(18px, 4vw, 26px);
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(9px, 2.5vw, 11px);
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
-            transition: all 0.2s ease;
-            z-index: 10;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 4px 4px 0px #bdbdbd;
         }
 
-        .btn-no {
-            padding: 13px 28px;
-            background-color: #e76f51;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.15s ease;
+        .btn-moveon:hover {
+            background-color: #e63946;
+            color: #fff;
         }
 
-        #final-message {
-            display: none;
-            margin-top: 25px;
-            padding: 25px;
-            background: white;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
-            max-width: 460px;
-            animation: fadeIn 0.6s ease;
+        .btn-moveon:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #bdbdbd;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        /* Efek Flash Merah saat tertabrak */
+        .hit-flash {
+            animation: flashRed 0.35s ease;
         }
 
-        .btn-wa {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 12px 24px;
-            background-color: #25D366;
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 14px;
+        @keyframes flashRed {
+            0%, 100% { background-color: #f7f7f7; }
+            50% { background-color: #ffd6da; }
+        }
+
+        /* Penyesuaian khusus layar HP kecil atau mode landscape pendek */
+        @media (max-height: 520px) {
+            .container {
+                gap: 12px;
+            }
+            .game-area {
+                height: 115px;
+            }
+            .error-code {
+                font-size: 30px;
+            }
+            .error-desc {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- AUDIO UTAMA WIDGET (Pastikan file lagu-latar.mp3 ada di folder yang sama) -->
-<audio id="top-bg-audio" src="lagu-latar.mp3" preload="auto" loop></audio>
+    <div class="container">
+        <!-- Area Dino Game Versi Patah Hati (Di Atas) - Paused di awal sebelum di-klik -->
+        <div class="game-area paused" id="gameArea">
+            <div class="game-header">
+                <div class="hint">TAP / SPACE TO JUMP</div>
+                <!-- Dino Score versi Patah Hati -->
+                <div class="scoreboard">
+                    <span class="hi-score">HI <span id="hiScore">00404</span></span>
+                    <span>TEARS <span id="currentScore">00000</span></span>
+                </div>
+            </div>
 
-    <!-- ELEMEN AUDIO COVERFLOW -->
-    <audio id="audio-player"></audio>
+            <!-- Awan -->
+            <div class="cloud"></div>
 
-    <!-- 1. LAYAR PEMBUKA -->
-    <div id="opening-screen">
-        <div class="envelope-box">
-            <div class="envelope-icon">🎧</div>
-            <h2 style="font-size: 2.3rem; color: #fff;">Halo, Aul...</h2>
-            <p style="font-size: 0.9rem; color: rgba(255,255,255,0.75); margin-top: 8px; line-height: 1.6;">
-                Karena telepon gua semalem belum keangkat, gua bikin halaman khusus ini buat ngejelasin maksud ketikan gua. Dibuka sebentar ya, Ul?
-            </p>
-            <button class="btn-open" onclick="openLetter()">Buka & Dengarkan</button>
+            <!-- Karakter: Pixel Patah Hati dengan Animasi Mati (SVG) -->
+            <div class="heart-player" id="player">
+                <svg viewBox="0 0 16 16">
+                    <!-- Belahan Hati Kiri -->
+                    <g class="heart-left">
+                        <path fill="#e63946" d="M2,4 h3 v1 h1 v1 h-1 v1 h-1 v2 h1 v1 h1 v1 h1 v2 h-1 v1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-2 h-1 v-3 h1 v-1 z"/>
+                        <!-- Mata X Kiri (Muncul saat nabrak) -->
+                        <path class="dead-eyes" fill="#ffffff" d="M2,6 h1 v1 h-1 z M4,6 h1 v1 h-1 z M3,7 h1 v1 h-1 z M2,8 h1 v1 h-1 z M4,8 h1 v1 h-1 z"/>
+                    </g>
+                    <!-- Belahan Hati Kanan -->
+                    <g class="heart-right">
+                        <path fill="#e63946" d="M11,4 h3 v1 h1 v3 h-1 v2 h-1 v1 h-1 v1 h-1 v1 h-1 v-2 h1 v-1 h1 v-1 h-1 v-2 h1 v-1 h1 v-1 z"/>
+                        <!-- Mata X Kanan (Muncul saat nabrak) -->
+                        <path class="dead-eyes" fill="#ffffff" d="M11,6 h1 v1 h-1 z M13,6 h1 v1 h-1 z M12,7 h1 v1 h-1 z M11,8 h1 v1 h-1 z M13,8 h1 v1 h-1 z"/>
+                    </g>
+                    <!-- Kaki kecil ala Dino -->
+                    <rect class="leg-left" x="4" y="14" width="2" height="2" fill="#535353"/>
+                    <rect class="leg-right" x="10" y="14" width="2" height="2" fill="#535353"/>
+                </svg>
+            </div>
+
+            <!-- Rintangan: Batu Nisan Kenangan (SVG) -->
+            <div class="obstacle" id="obstacle">
+                <svg viewBox="0 0 12 16" width="100%" height="100%">
+                    <path fill="#535353" d="M3,2 h6 v1 h1 v1 h1 v10 h1 v2 h-12 v-2 h1 v-10 h1 v-1 h1 z"/>
+                    <rect x="5" y="5" width="2" height="6" fill="#f7f7f7"/>
+                    <rect x="4" y="6" width="4" height="2" fill="#f7f7f7"/>
+                </svg>
+            </div>
+
+            <!-- Overlay saat Mati / Nabrak -->
+            <div class="game-over-overlay" id="gameOverOverlay">
+                <div class="game-over-text">HEARTBROKEN</div>
+                <div class="game-over-score">SCORE: <span id="finalScore">00000</span></div>
+                <div class="restart-icon" title="Main Lagi">&#8635;</div>
+            </div>
         </div>
 
-        <!-- WIDGET KECIL DI POJOK KANAN BAWAH -->
-        <div class="top-glass-widget">
-            <div class="top-widget-header">
-                <img id="top-cover-img" src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=300&q=80" alt="Spotify Cover" class="top-widget-cover">
-                <div class="top-widget-meta">
-                    <div class="top-widget-title" id="top-title">Memuat Judul...</div>
-                    <div class="top-widget-artist" id="top-artist">Spotify Track</div>
-                </div>
-            </div>
-
-            <div class="top-widget-progress-area">
-                <div class="top-widget-times">
-                    <span id="top-current-time">0:00</span>
-                    <span id="top-remaining-time">-0:00</span>
-                </div>
-                <input type="range" class="top-widget-slider" id="top-slider" min="0" max="100" value="0" oninput="seekTopAudio(this.value)">
-            </div>
-
-            <div class="top-widget-volume-area">
-                <span style="font-size: 12px;">🔊</span>
-                <input type="range" class="top-widget-volume-slider" id="top-volume-slider" min="0" max="1" step="0.1" value="1" oninput="setTopVolume(this.value)">
-            </div>
-
-            <div class="top-widget-controls">
-                <button class="top-ctrl-btn shuffle-active" onclick="this.classList.toggle('shuffle-active')">
-                    <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
-                </button>
-                <button class="top-ctrl-btn" onclick="resetTopAudio()">
-                    <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-                </button>
-                <button class="top-ctrl-btn play-main" id="top-play-btn" onclick="toggleTopAudio()">
-                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <button class="top-ctrl-btn" onclick="resetTopAudio()">
-                    <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-                </button>
-                <button class="top-ctrl-btn" onclick="this.classList.toggle('shuffle-active')">
-                    <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
-                </button>
-            </div>
+        <!-- Teks 404 di Tengah-Tengah -->
+        <div class="error-content">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Chance to Return Not Found</h2>
+            <p class="error-desc">Halaman, perasaan, atau kesempatan untuk kembali sudah tidak ditemukan.</p>
+            <button class="btn-moveon" onclick="this.blur(); restartGame();">COBA MOVE ON</button>
         </div>
-    </div>
-
-    <!-- KONTEN UTAMA -->
-    <div id="main-content">
-
-        <!-- BAGIAN 1: APRESIASI REKAN PLP & PDD -->
-        <section id="memory-section">
-            <h1 style="color: var(--dark-bg);">Satu Hal yang Perlu Lu Tahu, Ul...</h1>
-            <p class="subtitle">
-                Jauh sebelum urusan tugas atau proposal apa pun, gua beneran bersyukur bisa kenal dan satu tim bareng lu di PLP & PDD ini.
-            </p>
-
-            <div class="memory-gallery">
-                <div class="polaroid">
-                    <img src="berdua 1.jpeg" alt="Momen 1">
-                    <div class="polaroid-caption">Partner PLP & PDD terbaik</div>
-                </div>
-                <div class="polaroid">
-                    <img src="momen 2.jpeg" alt="Momen 2">
-                    <div class="polaroid-caption">Selalu sabar & baik banget</div>
-                </div>
-                <div class="polaroid">
-                    <img src="berdua 3.jpeg" alt="Momen 3">
-                    <div class="polaroid-caption">Gua gak pernah nganggep lu sebatas "fungsi"</div>
-                </div>
-            </div>
-
-            <p style="margin-top: 45px; font-size: 0.85rem; color: #777;">↓ Scroll ke bawah buat dengerin penjelasan gua ↓</p>
-        </section>
-
-        <!-- BAGIAN 2: VISION OS 3D MUSIC & VOICE PLAYER -->
-        <section id="music-section">
-            <h2>Dengerin Penjelasan Gua Sebentar Ya...</h2>
-            <p class="subtitle" style="color: rgba(255,255,255,0.75); margin-bottom: 10px;">
-                Geser kartu di bawah atau tekan tombol Play dan pesan di panel kaca bawah untuk mendengarkan dan membaca.
-            </p>
-
-            <div class="coverflow-wrapper" id="coverflow"></div>
-
-            <div class="glass-player-bar">
-                <div class="player-controls-left">
-                    <button class="icon-btn" onclick="changeTrack(-1)">
-                        <svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-                    </button>
-                    <button class="icon-btn" id="play-pause-btn" onclick="togglePlay()">
-                        <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <button class="icon-btn" onclick="changeTrack(1)">
-                        <svg viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
-                    </button>
-                </div>
-
-                <div class="now-playing-pill">
-                    <img id="pill-img" src="" alt="Track Cover">
-                    <div class="pill-text">
-                        <div class="pill-title" id="pill-title">Judul Track</div>
-                        <div class="pill-artist" id="pill-artist">Nama</div>
-                    </div>
-                    <div class="sound-wave" id="sound-wave">
-                        <span></span><span></span><span></span><span></span>
-                    </div>
-                    <div class="pill-progress-bg">
-                        <div class="pill-progress-fill" id="progress-fill"></div>
-                    </div>
-                </div>
-
-                <div class="player-controls-right">
-                    <button class="icon-btn" id="lyrics-toggle-btn" onclick="toggleLyricsDrawer()" aria-label="Buka transkrip voice" aria-expanded="false">
-                        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-9 9H7V9h4v2zm6 0h-4V9h4v2z"/></svg>
-                    </button>
-                    <button class="icon-btn" id="auto-next-btn" onclick="toggleAutoNext()">
-                        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-                    </button>
-                    <div class="player-volume-control" id="player-volume-control">
-                        <button class="icon-btn" type="button" onclick="togglePlayerVolumeSlider(event)" aria-label="Atur volume voice" title="Atur volume voice">
-                            <svg id="vol-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                        </button>
-                        <input class="player-volume-slider" id="player-volume-slider" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume voice" title="Volume voice" oninput="setVoiceVolume(this.value, event)">
-                    </div>
-                </div>
-            </div>
-
-            <div class="lyrics-drawer" id="lyrics-drawer">
-                <div class="lyrics-badge" id="track-badge">Pesan Klarifikasi Utama</div>
-                <p id="typewriter-text">Klik tombol ▶️ di panel bawah atau klik kartu di atas untuk memutar pesan dan membaca penjelasan gua...</p>
-            </div>
-        </section>
-
-        <!-- BAGIAN 3: TOMBOL INTERAKTIF -->
-        <section id="forgive-section">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z0b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Sorry GIF" class="cute-gif" id="reaction-gif">
-            
-            <h2 id="question-title" style="color: var(--dark-bg);">Jadi... Jangan Kecewa Lagi Ya,Ul? </h2>
-            <p class="subtitle" style="margin-bottom: 10px;">
-                Gua bener-bener minta maaf karena salah nyusun kalimat semalem. Dimaafin kan?
-            </p>
-
-            <div class="button-group" id="btn-container">
-                <button class="btn-yes" id="btn-yes" onclick="forgiveMe()">Iya Yan, Dimaafin</button>
-                <button class="btn-no" id="btn-no" onmouseover="moveButton()" ontouchstart="moveButton()">Masih Kesel!</button>
-            </div>
-
-            <div id="final-message">
-                <h2 style="font-size: 2.1rem; color: #2a9d8f;">Alhamdulillah, Makasih Banyak Aul! </h2>
-                <p style="font-size: 0.95rem; line-height: 1.6; color: #444;">
-                    Lega banget rasanya kalau lu udah baca ini. Gua janji bakal lebih jaga omongan dan ketikan gua ke depannya. Tetap jadi rekan dan temen baik gua ya, Ul!
-                </p>
-                <a href="https://api.whatsapp.com/send?text=Yan,%20gua%20udah%20baca%20web%20lu.%20Iya%20gua%20maafin." class="btn-wa" target="_blank">
-                    💬 Kabarin Gua di WhatsApp
-                </a>
-            </div>
-        </section>
-
     </div>
 
     <script>
-        // --- LINK SPOTIFY (Hanya untuk mengambil Judul, Artis, dan Cover secara otomatis) ---
-        const spotifyTrackUrl = "https://open.spotify.com/track/2947QkVkGSKgCGmKaOH40m?si=9c15256e02b74ad9"; 
+        const player = document.getElementById('player');
+        const obstacle = document.getElementById('obstacle');
+        const scoreElement = document.getElementById('currentScore');
+        const hiScoreElement = document.getElementById('hiScore');
+        const finalScoreElement = document.getElementById('finalScore');
+        const gameArea = document.getElementById('gameArea');
+        const gameOverOverlay = document.getElementById('gameOverOverlay');
 
-        function loadSpotifyMetadata() {
-            if (spotifyTrackUrl.includes("spotify.com/track/")) {
-                fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(spotifyTrackUrl)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        let rawTitle = data.title || "Spotify Track";
-                        let songName = rawTitle.split(" - song by ")[0].split(" by ")[0];
-                        let artistName = rawTitle.includes(" by ") ? rawTitle.split(" by ")[1] : "Spotify Artist";
+        let score = 0;
+        let hiScore = 404;
+        let isDead = false;
+        let isStarted = false;
+        let jumpTimer = null;
 
-                        document.getElementById('top-title').innerText = songName;
-                        document.getElementById('top-artist').innerText = artistName;
-                        if (data.thumbnail_url) {
-                            document.getElementById('top-cover-img').src = data.thumbnail_url;
-                        }
-                    })
-                    .catch(() => {
-                        document.getElementById('top-title').innerText = "Heart";
-                        document.getElementById('top-artist').innerText = "Halal Nasheed";
-                    });
-            }
-        }
-
-        loadSpotifyMetadata();
-
-        // --- LOGIKA AUDIO WIDGET HALAMAN PERTAMA (Memutar lagu-latar.mp3) ---
-        const topAudio = document.getElementById('top-bg-audio');
-        const topPlayBtn = document.getElementById('top-play-btn');
-        const topSlider = document.getElementById('top-slider');
-        let isTopPlaying = false;
-        let userVolume = 1.0;
-
-        function setTopVolume(val) {
-            userVolume = parseFloat(val);
-            if (!isPlaying) {
-                topAudio.volume = userVolume;
-            }
-        }
-
-        function formatTime(sec) {
-            if (isNaN(sec)) return "0:00";
-            const m = Math.floor(sec / 60);
-            const s = Math.floor(sec % 60);
-            return `${m}:${s < 10 ? '0' : ''}${s}`;
-        }
-
-        function updateTopWidgetUI() {
-            if (topAudio.duration) {
-                topSlider.max = topAudio.duration;
-                topSlider.value = topAudio.currentTime;
-                document.getElementById('top-current-time').innerText = formatTime(topAudio.currentTime);
-                const rem = topAudio.duration - topAudio.currentTime;
-                document.getElementById('top-remaining-time').innerText = `-${formatTime(rem)}`;
-                
-                const pct = (topAudio.currentTime / topAudio.duration) * 100;
-                topSlider.style.background = `linear-gradient(to right, #ffffff ${pct}%, rgba(255, 255, 255, 0.3) ${pct}%)`;
-            }
-        }
-
-        function toggleTopAudio() {
-            if (isTopPlaying) {
-                topAudio.pause();
-                isTopPlaying = false;
-                topPlayBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-            } else {
-                topAudio.play().then(() => {
-                    isTopPlaying = true;
-                    topPlayBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-                }).catch(e => {
-                    alert("File 'lagu-latar.mp3' belum dimasukkan ke folder web!");
-                });
-            }
-        }
-
-        topAudio.addEventListener('timeupdate', updateTopWidgetUI);
-        
-        let wasVoicePlayingOnHidden = false;
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // Jeda audio latar jika sedang berjalan
-                if (!topAudio.paused) {
-                    topAudio.pause();
-                    isTopPlaying = true;
-                }
-                // Jeda voice note dan efek ketikan jika sedang berjalan
-                if (isPlaying) {
-                    wasVoicePlayingOnHidden = true;
-                    audioPlayer.pause();
-                    clearTimeout(typingTimer);
-                    isPlaying = false;
-                    updatePlayButtonUI();
-                } else {
-                    wasVoicePlayingOnHidden = false;
-                }
-            } else {
-                // Lanjutkan voice note jika sebelumnya sedang berputar sebelum tab ditinggal
-                if (wasVoicePlayingOnHidden) {
-                    isPlaying = true;
-                    updatePlayButtonUI();
-                    audioPlayer.play().catch(() => {});
-                    continueTypewriter();
-                    wasVoicePlayingOnHidden = false;
-                }
-                // Lanjutkan lagu latar jika sebelumnya sedang berputar
-                if (isTopPlaying) {
-                    topAudio.play().then(() => {
-                        topPlayBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-                    }).catch(() => {
-                        isTopPlaying = false;
-                        topPlayBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-                    });
-                }
-            }
-        });
-
-        function seekTopAudio(val) {
-            topAudio.currentTime = val;
-        }
-
-        function resetTopAudio() {
-            topAudio.currentTime = 0;
-            topAudio.pause();
-            isTopPlaying = false;
-            topPlayBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-            updateTopWidgetUI();
-        }
-
-        // --- DATA 5 KARTU COVERFLOW ---
-        const tracks = [
-            {
-                title: "Rekan PLP & PDD",
-                artist: "Bagian 1 • Apresiasi",
-                cover: "voice 1.jpeg",
-                audio: "bagian 1.mp3",
-                bgGradient: "radial-gradient(circle at 50% 40%, #3a5a40 0%, #1b263b 60%, #0d1b2a 100%)",
-                badge: "Track 01 • Kenangan PLP",
-                message: "Ul, selama kita bareng di PLP dan PDD, gua selalu respek sama cara lu kerja dan bantuin orang sekitar. Gua gak pernah sedikit pun nganggep enteng kehadiran lu."
-            },
-            {
-                title: "Salah Pilih Kalimat",
-                artist: "Bagian 2 • Pengakuan",
-                cover: "voice 2.jpeg",
-                audio: "bagian 2.mp3",
-                bgGradient: "radial-gradient(circle at 50% 40%, #6d597a 0%, #355070 60%, #1d2d44 100%)",
-                badge: "Track 02 • Pengakuan Jujur",
-                message: "Pas semalem lu chat 'santai aja, gua masih nganggep lu rekan PLP dan PDD kok', Nah, jujur gue bingung, mau bahas apa biar obrolan kita ini enggak kelihatan canggung atau berhenti di situ? Eh, malah gue salah jawab. Jadi salah paham kan jadinya. Maaf."
-            },
-            {
-                title: "Voice Note Klarifikasi",
-                artist: "Atian • Buat Aulia Fitri Anisa",
-                cover: "voice 3.jpeg",
-                audio: "utama.mp3",
-                bgGradient: "radial-gradient(circle at 50% 40%, #b5651d 0%, #5c3317 55%, #1a0f0a 100%)",
-                badge: "🎙️ Track Utama • Pesan Suara & Klarifikasi",
-                message: "Ul, maafin gue ya, soal ketikan gue semalam. Sumpah gue sama sekali enggak pernah menganggap fungsi dan tujuan lu buat ngarahin gue ngerjain proposal atau manfaatin kebaikan lu doang, Ul. Semalam itu gue cuma gengsi aja, terus bingung nyari topik biar kita bisa ngobrol sih sebenarnya. Makanya gue malah bawa-bawa soal proposal.  Gua ngaku salah, kayak bodoh banget gitu loh. Salah ngetik sampai bikin lu kecewa. Maafin gue ya.(btw gua vn nya ga sambil nangis ya, emng suara gua begitu hehe)"
-            },
-            {
-                title: "Bukan Sebatas Fungsi",
-                artist: "Bagian 4 • Janji Perbaikan",
-                cover: "voice 4.jpeg",
-                audio: "bagian 4.mp3",
-                bgGradient: "radial-gradient(circle at 50% 40%, #9b2226 0%, #3c096c 60%, #10002b 100%)",
-                badge: "Track 04 • Permintaan Maaf",
-                message: "Gue kaget sih, gue jadi ngerasa bersalah pas baca lu ngetik 'fungsi dan tujuan gue buat ini ya'. Sebenarnya enggak, enggak sama sekali. Lu itu teman baik gue, Ul, bukan tempat buat numpang nanya proposal doang."
-            },
-            {
-                title: "Baikan Yuk, Ul?",
-                artist: "Bagian 5 • Penutup",
-                cover: "bonus.jpeg",
-                audio: "bagian 5.mp3",
-                bgGradient: "radial-gradient(circle at 50% 40%, #2a9d8f 0%, #264653 60%, #111d13 100%)",
-                badge: "Track 05 • Harapan",
-                message: "Kalau lu udah selesai baca dan dengerin ini, scroll sedikit lagi ke bawah ya Ul. Jangan marah atau kecewa lama-lama ya!"
-            }
-        ];
-
-        let currentIndex = 2;
-        let isPlaying = false;
-        let isAutoNext = true;
-        let typingTimer = null;
-        let currentCharIndex = 0;
-        let hasAudioLoaded = false;
-        let voiceVolume = 1;
-        const audioPlayer = document.getElementById('audio-player');
-        audioPlayer.loop = false;
-        audioPlayer.volume = voiceVolume;
-
-        let isDragging = false;
-        let startX = 0;
-        let diffX = 0;
-
-        function setupSwipeGestures() {
-            const container = document.getElementById('coverflow');
-            
-            // Touch Events (HP)
-            container.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                startX = e.touches[0].clientX;
-                diffX = 0;
-            }, { passive: true });
-
-            container.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                diffX = e.touches[0].clientX - startX;
-            }, { passive: true });
-
-            container.addEventListener('touchend', () => {
-                if (!isDragging) return;
-                isDragging = false;
-                if (diffX > 45) {
-                    changeTrack(-1, isPlaying);
-                } else if (diffX < -45) {
-                    changeTrack(1, isPlaying);
-                }
-            });
-
-            // Mouse Events (Laptop / PC)
-            container.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startX = e.clientX;
-                diffX = 0;
-                container.classList.add('dragging');
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                diffX = e.clientX - startX;
-            });
-
-            window.addEventListener('mouseup', () => {
-                if (!isDragging) return;
-                isDragging = false;
-                container.classList.remove('dragging');
-                if (diffX > 50) {
-                    changeTrack(-1, isPlaying);
-                } else if (diffX < -50) {
-                    changeTrack(1, isPlaying);
-                }
-            });
-        }
-
-        function initCoverflow() {
-            const btn = document.getElementById('auto-next-btn');
-            if (isAutoNext) btn.classList.add('active');
-            else btn.classList.remove('active');
-
-            const container = document.getElementById('coverflow');
-            container.innerHTML = '';
-            tracks.forEach((track, idx) => {
-                const card = document.createElement('div');
-                card.className = 'cover-card';
-                card.onclick = () => {
-                    // Cegah klik kartu jika sedang drag / geser
-                    if (Math.abs(diffX) < 10) {
-                        selectTrack(idx);
+        // Fungsi memicu animasi loncat
+        function doJump() {
+            if (!player.classList.contains('jump')) {
+                player.classList.add('jump');
+                clearTimeout(jumpTimer);
+                jumpTimer = setTimeout(() => {
+                    if (!isDead) {
+                        player.classList.remove('jump');
                     }
-                };
-                card.innerHTML = `
-                    <img src="${track.cover}" alt="${track.title}">
-                    <div class="cover-card-info">
-                        <div class="cover-card-title">${track.title}</div>
-                        <div class="cover-card-artist">${track.artist}</div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            setupSwipeGestures();
-            updateCoverflowUI(false);
-        }
-
-        function updateCoverflowUI(autoStart = false) {
-            const cards = document.querySelectorAll('.cover-card');
-            cards.forEach((card, idx) => {
-                card.className = 'cover-card';
-                const diff = idx - currentIndex;
-                if (diff === 0) card.classList.add('active');
-                else if (diff === -1) card.classList.add('prev-1');
-                else if (diff === -2) card.classList.add('prev-2');
-                else if (diff === 1) card.classList.add('next-1');
-                else if (diff === 2) card.classList.add('next-2');
-                else card.classList.add('hidden');
-            });
-
-            const activeTrack = tracks[currentIndex];
-            document.getElementById('music-section').style.background = activeTrack.bgGradient;
-            document.getElementById('pill-img').src = activeTrack.cover;
-            document.getElementById('pill-title').innerText = activeTrack.title;
-            document.getElementById('pill-artist').innerText = activeTrack.artist;
-            document.getElementById('track-badge').innerText = activeTrack.badge;
-
-            stopAndResetCurrentTrack();
-            audioPlayer.src = activeTrack.audio;
-            hasAudioLoaded = false;
-
-            if (autoStart) {
-                playCurrentTrack();
-            } else {
-                document.getElementById('typewriter-text').innerHTML = "Klik tombol ▶️ di panel bawah atau klik kartu di atas untuk memutar pesan dan membaca penjelasan gua...";
+                }, 550);
             }
         }
 
-        function stopAndResetCurrentTrack() {
-            clearTimeout(typingTimer);
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            isPlaying = false;
-            currentCharIndex = 0;
-            document.getElementById('progress-fill').style.width = '0%';
-            updatePlayButtonUI();
-            topAudio.volume = userVolume;
-        }
-
-        function selectTrack(index) {
-            if (index === currentIndex) {
-                togglePlay();
+        // Fungsi Melompat & Memulai Game
+        function jump() {
+            if (!isStarted) {
+                restartGame();
                 return;
             }
-            currentIndex = index;
-            updateCoverflowUI(false);
+            if (isDead) {
+                restartGame();
+                return;
+            }
+            doJump();
         }
 
-        function changeTrack(direction, autoPlayAfterChange = false) {
-            currentIndex = (currentIndex + direction + tracks.length) % tracks.length;
-            updateCoverflowUI(autoPlayAfterChange);
+        // Fungsi Mati ketika Menabrak
+        function triggerDeath() {
+            isDead = true;
+            clearTimeout(jumpTimer);
+            gameArea.classList.add('paused');
+            player.classList.remove('running');
+            player.classList.add('dead');
+            finalScoreElement.innerText = String(score).padStart(5, '0');
+            gameOverOverlay.classList.add('show');
+
+            document.body.classList.add('hit-flash');
+            setTimeout(() => document.body.classList.remove('hit-flash'), 350);
         }
 
-        function playCurrentTrack() {
-            // Kecilkan volume lagu latar saat voice diputar
-            topAudio.volume = userVolume * 0.2;
+        // Fungsi Mulai / Mulai Ulang (Spasi atau Tombol Coba Move On)
+        function restartGame() {
+            if (!isStarted || isDead) {
+                isStarted = true;
+                isDead = false;
+                score = 0;
+                scoreElement.innerText = "00000";
 
-            const activeTrack = tracks[currentIndex];
-            const el = document.getElementById('typewriter-text');
+                clearTimeout(jumpTimer);
+                player.classList.remove('dead', 'jump');
+                void player.offsetWidth; /* Memicu reflow agar siap loncat */
+                player.classList.add('running');
+                gameArea.classList.remove('paused');
+                gameOverOverlay.classList.remove('show');
 
-            if (currentCharIndex === 0 || currentCharIndex >= activeTrack.message.length) {
-                currentCharIndex = 0;
-                el.innerHTML = "";
-                document.getElementById('progress-fill').style.width = '0%';
+                // Reset posisi batu nisan ke kanan layar hanya saat mulai ulang dari mati
+                obstacle.style.animation = 'none';
+                obstacle.offsetHeight; /* Memicu reflow browser */
+                obstacle.style.animation = null;
             }
 
-            isPlaying = true;
-            updatePlayButtonUI();
-
-            audioPlayer.play().then(() => {
-                hasAudioLoaded = true;
-            }).catch(() => {
-                hasAudioLoaded = false;
-            });
-
-            continueTypewriter();
+            // Langsung loncat tanpa menghilangkan batu nisan yang sedang berjalan
+            doJump();
         }
 
-        function togglePlay() {
-            if (isPlaying) {
-                audioPlayer.pause();
-                clearTimeout(typingTimer);
-                isPlaying = false;
-                updatePlayButtonUI();
-                topAudio.volume = userVolume;
-            } else {
-                playCurrentTrack();
+        // Kontrol Keyboard (Laptop/PC)
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                e.preventDefault();
+                jump();
             }
-        }
+        });
 
-        function updatePlayButtonUI() {
-            const btn = document.getElementById('play-pause-btn');
-            const wave = document.getElementById('sound-wave');
-            if (isPlaying) {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-                wave.classList.add('playing');
-            } else {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-                wave.classList.remove('playing');
-            }
-        }
+        // Kontrol Sentuh / Klik (HP & Mouse)
+        gameArea.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            jump();
+        });
 
-        function continueTypewriter() {
-            clearTimeout(typingTimer);
-            const activeTrack = tracks[currentIndex];
-            const text = activeTrack.message;
-            const el = document.getElementById('typewriter-text');
+        // Menjalankan Skor selama sudah dimulai dan masih hidup
+        setInterval(() => {
+            if (isStarted && !isDead) {
+                score++;
+                scoreElement.innerText = String(score).padStart(5, '0');
 
-            function type() {
-                if (!isPlaying) return;
-                if (currentCharIndex < text.length) {
-                    el.innerHTML += text.charAt(currentCharIndex);
-                    currentCharIndex++;
-                    if (!hasAudioLoaded || !audioPlayer.duration) {
-                        document.getElementById('progress-fill').style.width = ((currentCharIndex / text.length) * 100) + '%';
-                    }
-                    typingTimer = setTimeout(type, 38);
-                } else {
-                    if (!hasAudioLoaded) {
-                        handleTrackFinished();
-                    }
+                if (score > hiScore) {
+                    hiScore = score;
+                    hiScoreElement.innerText = String(hiScore).padStart(5, '0');
                 }
             }
-            type();
-        }
+        }, 100);
 
-        audioPlayer.addEventListener('timeupdate', () => {
-            if (audioPlayer.duration) {
-                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                document.getElementById('progress-fill').style.width = percent + '%';
+        // Deteksi Tabrakan yang Akurat di Semua Ukuran Layar (Laptop & HP)
+        setInterval(() => {
+            if (!isStarted || isDead) return;
+
+            const playerRect = player.getBoundingClientRect();
+            const obstacleRect = obstacle.getBoundingClientRect();
+
+            // Padding hitbox agar deteksi tabrakan terasa pas dan adil
+            const hitPadding = 7;
+
+            const isColliding = !(
+                playerRect.right - hitPadding < obstacleRect.left + hitPadding ||
+                playerRect.left + hitPadding > obstacleRect.right - hitPadding ||
+                playerRect.bottom - hitPadding < obstacleRect.top + hitPadding ||
+                playerRect.top + hitPadding > obstacleRect.bottom - hitPadding
+            );
+
+            if (isColliding) {
+                triggerDeath();
             }
-        });
-
-        audioPlayer.addEventListener('ended', () => {
-            handleTrackFinished();
-        });
-
-        function handleTrackFinished() {
-            clearTimeout(typingTimer);
-            isPlaying = false;
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            updatePlayButtonUI();
-            topAudio.volume = userVolume;
-
-            if (isAutoNext) {
-                setTimeout(() => {
-                    changeTrack(1, true);
-                }, 600);
-            }
-        }
-
-        function toggleAutoNext() {
-            isAutoNext = !isAutoNext;
-            const btn = document.getElementById('auto-next-btn');
-            btn.classList.toggle('active', isAutoNext);
-        }
-
-        function toggleLyricsDrawer() {
-            const drawer = document.getElementById('lyrics-drawer');
-            const button = document.getElementById('lyrics-toggle-btn');
-            const isOpen = drawer.style.display !== 'block';
-            drawer.style.display = isOpen ? 'block' : 'none';
-            button.setAttribute('aria-expanded', String(isOpen));
-            button.setAttribute('aria-label', isOpen ? 'Tutup transkrip voice' : 'Buka transkrip voice');
-        }
-
-        function togglePlayerVolumeSlider(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('player-volume-control').classList.toggle('open');
-        }
-
-        function setVoiceVolume(value, event) {
-            if (event) event.stopPropagation();
-            voiceVolume = Number(value);
-            audioPlayer.volume = voiceVolume;
-        }
-
-        function toggleMute() {
-            audioPlayer.muted = !audioPlayer.muted;
-            document.getElementById('vol-icon').style.opacity = audioPlayer.muted ? '0.4' : '1';
-        }
-
-        function openLetter() {
-            // Pastikan musik latar tetap/mulai berputar
-            if (!isTopPlaying) toggleTopAudio();
-
-            const opening = document.getElementById('opening-screen');
-            const main = document.getElementById('main-content');
-            opening.style.opacity = '0';
-            setTimeout(() => {
-                opening.style.visibility = 'hidden';
-                main.style.display = 'block';
-                setTimeout(() => { main.style.opacity = '1'; }, 50);
-                initCoverflow();
-            }, 800);
-        }
-
-        window.addEventListener('scroll', () => {
-            const polaroids = document.querySelectorAll('.polaroid');
-            polaroids.forEach((card, index) => {
-                const rect = card.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 80) {
-                    setTimeout(() => card.classList.add('show'), index * 200);
-                }
-            });
-        });
-
-        let yesScale = 1;
-        let noClickCount = 0;
-        const rejectTexts = [
-            "Masih Kesel!",
-            "Jangan kesel lagi dong Ul 🥺",
-            "Sumpah gua salah ketik doang 😭",
-            "Maafin gua plis Aul...",
-            "Pencet yang sebelahnya aja ya 🙏"
-        ];
-
-        function moveButton() {
-            const btnNo = document.getElementById('btn-no');
-            const btnYes = document.getElementById('btn-yes');
-            const randomX = Math.floor(Math.random() * 200) - 100;
-            const randomY = Math.floor(Math.random() * 140) - 70;
-            btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            noClickCount++;
-            btnNo.innerText = rejectTexts[noClickCount % rejectTexts.length];
-            yesScale += 0.12;
-            btnYes.style.transform = `scale(${yesScale})`;
-        }
-
-        function forgiveMe() {
-            document.getElementById('btn-container').style.display = 'none';
-            document.getElementById('question-title').innerText = "Makasih udah mau ngertiin, Ul!";
-            document.getElementById('final-message').style.display = 'block';
-            document.getElementById('reaction-gif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z0b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5b3h4Z2J5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/MDJ9IbxxvDUQM/giphy.gif";
-        }
+        }, 20);
     </script>
+
 </body>
 </html>
